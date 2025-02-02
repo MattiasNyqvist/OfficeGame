@@ -1,0 +1,27 @@
+/* Center the form */
+.form-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Make the disabled button more visible */
+.btn-primary:disabled {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+}
+
+/* Adjust input field styling */
+.input-group-text {
+    background-color: #f8f9fa;
+}
+
+/* Improve form responsiveness */
+@media (max-width: 768px) {
+    .form-container {
+        max-width: 90%;
+    }
+}
