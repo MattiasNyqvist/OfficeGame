@@ -101,12 +101,17 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             alertBox.classList.remove("d-none", "alert-success", "alert-danger");
             alertBox.classList.add(data.message === "User registered successfully" ? "alert-success" : "alert-danger");
-            alertBox.innerHTML = data.message;
 
-            // Reset form if successful
+            // Add success message with a link to index.php
             if (data.message === "User registered successfully") {
+                alertBox.innerHTML = `
+                    ${data.message} <br>
+                    <a href="../index.php" class="alert-link">Go to Home</a>
+                `;
                 registerForm.reset();
                 validateForm(); // Ensure register button gets disabled
+            } else {
+                alertBox.innerHTML = data.message;
             }
         })
         .catch(error => {
