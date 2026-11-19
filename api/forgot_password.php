@@ -39,8 +39,12 @@ $stmt->bindParam(":token", $token);
 $stmt->bindParam(":expires", $expires);
 $stmt->execute();
 
-// Send email (Here, just returning a response)
-$reset_link = "http://officegame.local/public/reset-password.html?token=$token";
+// Build base URL from environment or current request
+$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost:8080';
+$baseUrl = rtrim(getenv('APP_URL') ?: "$scheme://$host", '/');
+
+$reset_link = "$baseUrl/public/reset-password.html?token=$token";
 
 echo json_encode(["success" => true, "message" => "A reset link has been sent.", "reset_link" => $reset_link]);
 ?>

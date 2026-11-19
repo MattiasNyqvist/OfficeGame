@@ -5,17 +5,18 @@ class Database {
     public function connect() {
         $this->conn = null;
 
-        // Load .env file
-        $env = parse_ini_file(__DIR__ . "/.env");
+        $envFile = __DIR__ . "/.env";
+        $env = file_exists($envFile) ? parse_ini_file($envFile) : [];
 
-        $host = $env['DB_HOST'];
-        $db_name = $env['DB_NAME'];
-        $username = $env['DB_USER'];
-        $password = $env['DB_PASS'];
+        $host = getenv('DB_HOST') ?: ($env['DB_HOST'] ?? 'localhost');
+        $port = getenv('DB_PORT') ?: ($env['DB_PORT'] ?? '3306');
+        $db_name = getenv('DB_NAME') ?: ($env['DB_NAME'] ?? '');
+        $username = getenv('DB_USER') ?: ($env['DB_USER'] ?? '');
+        $password = getenv('DB_PASS') ?: ($env['DB_PASS'] ?? '');
 
         try {
             $this->conn = new PDO(
-                "mysql:host=$host;dbname=$db_name;charset=utf8",
+                "mysql:host=$host;port=$port;dbname=$db_name;charset=utf8mb4",
                 $username,
                 $password
             );
