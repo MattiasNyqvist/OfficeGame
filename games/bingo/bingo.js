@@ -1,3 +1,19 @@
+// Map task emoji (stored in the DB) to Bootstrap Icons + a colour tone.
+const ICONS = {
+  "☕": { icon: "bi-cup-hot-fill", hue: "amber" },
+  "🚶": { icon: "bi-person-walking", hue: "green" },
+  "📧": { icon: "bi-envelope-check-fill", hue: "blue" },
+  "👏": { icon: "bi-hand-thumbs-up-fill", hue: "pink" },
+  "💧": { icon: "bi-droplet-fill", hue: "blue" },
+  "🧘": { icon: "bi-flower1", hue: "violet" },
+  "🥗": { icon: "bi-egg-fried", hue: "green" },
+  "🤝": { icon: "bi-people-fill", hue: "indigo" },
+  "✨": { icon: "bi-stars", hue: "amber" },
+  "🎧": { icon: "bi-headphones", hue: "violet" },
+  "👋": { icon: "bi-emoji-smile-fill", hue: "pink" },
+  "🏁": { icon: "bi-flag-fill", hue: "green" },
+};
+
 document.addEventListener("DOMContentLoaded", function () {
   fetch("bingo_data.php")
     .then((response) => response.json())
@@ -25,35 +41,50 @@ document.addEventListener("DOMContentLoaded", function () {
         const card = document.createElement("div");
         card.classList.add("bingo-card");
         card.dataset.taskId = task.game_task_id;
+        if (task.completed) card.classList.add("is-completed");
 
-        if (task.icon) {
-          if (/\.(png|svg|jpg|jpeg|webp)$/i.test(task.icon)) {
-            const img = document.createElement("img");
-            img.src = `../../icons/${task.icon}`;
-            img.alt = task.title;
-            img.classList.add("bingo-icon");
-            card.appendChild(img);
-          } else {
-            const iconSpan = document.createElement("span");
-            iconSpan.textContent = task.icon;
-            iconSpan.classList.add("bingo-icon");
-            iconSpan.style.fontSize = "2rem";
-            iconSpan.style.display = "block";
-            iconSpan.style.marginBottom = "0.5rem";
-            card.appendChild(iconSpan);
-          }
+        const iconWrap = document.createElement("div");
+        iconWrap.classList.add("icon-wrap");
+
+        const meta = ICONS[task.icon] || { icon: "bi-check2-circle", hue: "indigo" };
+        iconWrap.classList.add(`tone-${meta.hue}`);
+        if (/\.(png|svg|jpg|jpeg|webp)$/i.test(task.icon || "")) {
+          const img = document.createElement("img");
+          img.src = `../../icons/${task.icon}`;
+          img.alt = task.title;
+          img.classList.add("bingo-icon");
+          iconWrap.appendChild(img);
+        } else {
+          const i = document.createElement("i");
+          i.className = `bi ${meta.icon} bingo-icon`;
+          i.setAttribute("aria-hidden", "true");
+          iconWrap.appendChild(i);
         }
+
+        const badge = document.createElement("span");
+        badge.className = "done-badge";
+        badge.innerHTML = '<i class="bi bi-check-lg"></i>';
+        card.appendChild(badge);
+        card.appendChild(iconWrap);
 
         const title = document.createElement("h5");
         title.textContent = task.title;
         card.appendChild(title);
 
         const points = document.createElement("p");
-        points.textContent = `${task.points} Points`;
+        points.classList.add("points");
+        points.textContent = `${task.points} pts`;
         card.appendChild(points);
 
+        if (task.description) {
+          const description = document.createElement("p");
+          description.classList.add("task-description");
+          description.textContent = task.description;
+          card.appendChild(description);
+        }
+
         const button = document.createElement("button");
-        button.textContent = task.completed ? "Completed" : "Mark as Done";
+        setButton(button, task.completed);
         button.classList.add("complete-task");
 
         if (task.completed) {
@@ -75,9 +106,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((result) => {
               if (result.success) {
                 task.completed = task.completed ? 0 : 1;
-                button.textContent = task.completed
-                  ? "Completed"
-                  : "Mark as Done";
+                card.classList.toggle("is-completed", !!task.completed);
+                setButton(button, task.completed);
                 button.classList.toggle("completed");
 
                 // Update score dynamically
@@ -97,3 +127,9 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 });
+
+function setButton(button, completed) {
+  button.innerHTML = completed
+    ? '<i class="bi bi-check-circle-fill"></i> Completed'
+    : '<i class="bi bi-circle"></i> Mark as done';
+}

@@ -5,18 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register | OfficeGame</title>
     
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/register.css">
 </head>
-<body class="container mt-5">
-    <div class="form-container">
-        <h2 class="text-center">Register for OfficeGame</h2>
+<body class="auth-page">
+    <main class="auth-shell">
+        <div class="auth-brand" aria-label="OfficeGame">
+            <span class="brand-mark"><i class="bi bi-grid-3x3-gap-fill"></i></span>
+            <span>OfficeGame</span>
+        </div>
+        <div class="form-container">
+        <h1 class="auth-heading">Create your account</h1>
+        <p class="auth-subtitle">Join your team and start the weekly challenge.</p>
 
         <!-- Alert Box for Success/Failure Messages -->
         <div id="alertBox" class="alert d-none"></div>
@@ -58,19 +69,26 @@
 
             <div class="mb-3">
                 <label for="team" class="form-label">Select Team <span class="text-danger">*</span></label>
-                <select id="team" class="form-control">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-people"></i></span>
+                    <select id="team" class="form-select">
                     <option value="">Select Team</option>
-                </select>
+                    </select>
+                </div>
             </div>
 
-            <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-danger me-2" id="cancelButton">Cancel</button>
+            <div class="auth-actions">
+                <button type="button" class="btn btn-secondary" id="cancelButton">Cancel</button>
                 <button type="submit" class="btn btn-primary" id="registerButton" disabled data-bs-toggle="tooltip" data-bs-placement="top" title="All fields must be filled in correctly to register">
                     Register
                 </button>
             </div>
+            <div class="auth-links">
+                <span>Already have an account? <a href="login.html">Sign in</a></span>
+            </div>
         </form>
-    </div>
+        </div>
+    </main>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
